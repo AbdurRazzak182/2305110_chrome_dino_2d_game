@@ -49,7 +49,7 @@ char bg_cactus[8][20] = {"pic\\ct1.bmp",
 
 };
 
-struct background      //structure for background images and obstacles images
+struct background // structure for background images and obstacles images
 {
 	int x;
 	int y;
@@ -64,7 +64,7 @@ typedef struct // structure for leaderboard
 
 } player;
 
-player arr[100];      //structural array where player name and their score is added and sorted and shown screen
+player arr[100]; // structural array where player name and their score is added and sorted and shown screen
 int line = 0;
 
 char player_name[20];
@@ -118,14 +118,12 @@ void show_leaderboard()
 }
 
 bool Music = true;
-bool Jump_music = true;
-bool collision_music = true;
 
 void iDraw()
 {
 
 	iClear();
-	if (game_state == 1)//main playing state where jump ,run , backgronund rendering and cactus rendering ,start from mouse condition 1
+	if (game_state == 1) // main playing state where jump ,run , backgronund rendering and cactus rendering ,start from mouse condition 1
 	{
 
 		iShowBMP(0, 0, "pic\\bi.bmp");
@@ -164,9 +162,6 @@ void iDraw()
 
 		if (game_check == true)
 		{
-			Music = true;
-
-			PlaySound("sound\\ms1.wav", NULL, SND_LOOP | SND_ASYNC);
 
 			iSetColor(255, 0, 0);
 
@@ -181,16 +176,16 @@ void iDraw()
 		}
 	}
 
-	else if (game_state == 0)  //home menu 
+	else if (game_state == 0) // home menu
 	{
 
 		iSetColor(0, 255, 255);
 		iFilledRectangle(0, 593, 1100, 3);
 		iSetColor(255, 0, 0);
 		iShowBMP(0, 0, "pic\\home4.bmp");
-        iSetColor(255,0,0);
+		iSetColor(255, 0, 0);
 		iText(400, 520, "WELCOME  TO  MY  GAME", GLUT_BITMAP_TIMES_ROMAN_24);
-		iSetColor(0,0,255);
+		iSetColor(0, 0, 255);
 		iText(450, 480, "CHROME__CAT", GLUT_BITMAP_TIMES_ROMAN_24);
 		iSetColor(255, 255, 0);
 		iSetColor(255, 255, 255);
@@ -227,14 +222,14 @@ void iDraw()
 		iSetColor(0, 0, 255);
 		iText(720, 163, "PLAY", GLUT_BITMAP_HELVETICA_18);
 	}
-	else if (game_state == -1)  //leaderboard show
+	else if (game_state == -1) // leaderboard show
 	{
 
 		iSetColor(153, 255, 255);
 		iFilledRectangle(0, 0, 1100, 596);
 		iSetColor(0, 0, 204);
-		iLine(440, 510, 610, 510);
-		iText(440, 520, "TOP 5 SCORES", GLUT_BITMAP_TIMES_ROMAN_24);
+		iLine(460, 510, 620, 510);
+		iText(460, 520, "TOP 5 SCORES", GLUT_BITMAP_TIMES_ROMAN_24);
 
 		iSetColor(0, 255, 0);
 		iFilledRectangle(470, 100, 150, 40);
@@ -263,7 +258,7 @@ void iDraw()
 		iText(100, 290, "6. If  you  can  do  a  score  among  top  5  scorer  then  you  can  show  your  position  in  leaderboard.", GLUT_BITMAP_HELVETICA_18);
 	}
 
-	else if (game_state == 6)   //about me page
+	else if (game_state == 6) // about me page
 	{
 		iSetColor(153, 255, 204);
 		iFilledRectangle(0, 0, 1100, 596);
@@ -290,7 +285,7 @@ void iMouse(int button, int state, int mx, int my)
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
 
-		if (mx >= 700 && mx <= 800 && my >= 150 && my <= 190)//starting main game from this condition here
+		if (mx >= 700 && mx <= 800 && my >= 150 && my <= 190) // starting main game from this condition here
 		{
 			Music = false;
 			PlaySound(0, 0, 0);
@@ -309,6 +304,7 @@ void iMouse(int button, int state, int mx, int my)
 		{
 
 			game_state = -1;
+			PlaySound("sound\\ms1.wav", NULL, SND_LOOP | SND_ASYNC);
 		}
 
 		if (mx >= 470 && mx <= 620 && my >= 100 && my <= 140)
@@ -316,17 +312,17 @@ void iMouse(int button, int state, int mx, int my)
 			exit(0);
 		}
 
-		if (mx >= 200 && mx <= 400 && my >= 50 && my <= 90)//show instruction page
+		if (mx >= 200 && mx <= 400 && my >= 50 && my <= 90) // show instruction page
 		{
 			game_state = 5;
 		}
 
-		if (mx >= 700 && mx <= 900 && my >= 50 && my <= 90)//show about me page
+		if (mx >= 700 && mx <= 900 && my >= 50 && my <= 90) // show about me page
 		{
 			game_state = 6;
 		}
 
-		if (mx >= 480 && mx <= 630 && my >= 10 && my <= 50)//home menu
+		if (mx >= 480 && mx <= 630 && my >= 10 && my <= 50) // home menu
 		{
 			game_state = 0;
 		}
@@ -356,7 +352,7 @@ void iKeyboard(unsigned char key)
 
 		else
 		{
-			if (name_length < 19)//used to insert character
+			if (name_length < 19) // used to insert character
 			{
 
 				player_name[name_length] = key;
@@ -372,7 +368,6 @@ void iKeyboard(unsigned char key)
 		if (!isjumping)
 		{
 
-			collision_music = false;
 			PlaySound("sound\\jump_sound.wav", NULL, SND_ASYNC);
 			isjumping = true;
 			jumpvelocity = v;
@@ -384,7 +379,7 @@ void iSpecialKeyboard(unsigned char key)
 {
 }
 
-void setAll()   //background rendering,obstacle rendering
+void setAll() // background rendering,obstacle rendering
 {
 
 	for (int i = 0; i < 11; i++)
@@ -432,72 +427,74 @@ void setAll()   //background rendering,obstacle rendering
 	}
 }
 
-
 void score_calc()
 {
 
-	if (isscore)//true from mouse condition 1 to start not counting from run
+	if (isscore) // true from mouse condition 1 to start not counting from run
 		score++;
 	if (score >= 50 && score <= 99)
 	{
-		bgspeed = 11;
-	}
-	if (score >= 100 && score <= 149)//else if
-	{
 		bgspeed = 12;
-		gravity = -6;
+		gravity = -5;
+		set_timer_change_3 = 100;
 	}
-	if (score >= 150 && score <= 199)//else if
-	{
-		bgspeed = 13;
-		gravity = -6;
-		set_timer_change_3 = 110;
-	}
-	if (score >= 200 && score <= 249)//else if
+	if (score >= 100 && score <= 149) // else if
 	{
 		bgspeed = 14;
 		gravity = -6;
+		set_timer_change_3 = 100;
+	}
+	if (score >= 150 && score <= 199) // else if
+	{
+		bgspeed = 15;
+		gravity = -6;
 		set_timer_change_3 = 110;
+	}
+	if (score >= 200 && score <= 249) // else if
+	{
+		bgspeed = 17;
+		gravity = -6;
+		set_timer_change_3 = 115;
 	}
 	if (score >= 250 && score <= 299)
 	{
-		bgspeed = 15;
+		bgspeed = 18;
 		gravity = -7;
 		set_timer_change_3 = 110;
 	}
 	if (score >= 300 && score <= 400)
 	{
-		bgspeed = 17;
-		gravity = -7;
-		set_timer_change_3 = 120;
-	}
-	if (score >= 401 && score <= 500)//else if
-	{
 		bgspeed = 20;
 		gravity = -8;
+		set_timer_change_3 = 120;
+	}
+	if (score >= 401 && score <= 500) // else if
+	{
+		bgspeed = 22;
+		gravity = -9;
 		set_timer_change_3 = 125;
 	}
-	if(score>=501 && score<=700)
+	if (score >= 501 && score <= 700)
 	{
-		bgspeed=22;
-		gravity=-8;
-		set_timer_change_3=130;
+		bgspeed = 24;
+		gravity = -10;
+		set_timer_change_3 = 130;
 	}
-	if(score>=701 && score<=1000)
+	if (score >= 701 && score <= 1000)
 	{
-		bgspeed=25;
-		gravity=-9;
-		set_timer_change_3=140;
+		bgspeed = 25;
+		gravity = -11;
+		set_timer_change_3 = 140;
 	}
-	if(score>1000)
+	if (score > 1000)
 	{
-		bgspeed=28;
-		gravity=-10;
-		set_timer_change_3=145;
+		bgspeed = 28;
+		gravity = -12;
+		set_timer_change_3 = 145;
 	}
 }
 
-void score_leader()//taking name and score to array from score.txt file and sorting here
+void score_leader() // taking name and score to array from score.txt file and sorting here
 {
 
 	char string[100];
@@ -562,16 +559,15 @@ void score_leader()//taking name and score to array from score.txt file and sort
 		if (flag == 0)
 			break;
 	}
-
-	//fclose(fr);
 }
 
-void stack() //to store score into score.txt file and call score_leader function
+void stack() // to store score into score.txt file and call score_leader function
 {
 	fprintf(fp, "%d\n", score);
 
 	fclose(fp);
 	score_leader();
+	PlaySound("sound\\go.wav", NULL, SND_LOOP | SND_ASYNC);
 }
 
 void gameover()
@@ -582,14 +578,12 @@ void gameover()
 	iPauseTimer(2);
 	iPauseTimer(3);
 
-	PlaySound("sound\\catsound.wav", NULL, SND_ASYNC);
-
 	game_check = true;
 
 	stack();
 }
 
-void change() //background rendering from isettimer and collition conditions and call gameover()
+void change() // background rendering from isettimer and collition conditions and call gameover()
 {
 
 	for (int i = 0; i < 11; i++)
@@ -653,13 +647,13 @@ void change() //background rendering from isettimer and collition conditions and
 			cactus[i].x = 4600;
 	}
 }
-void change2()//character running function from calling isettimer()
+void change2() // character running function from calling isettimer()
 {
 	chr_run_idx++;
 	if (chr_run_idx >= 6)
 		chr_run_idx = 0;
 }
-void change3() //for applying jumping calculation
+void change3() // for applying jumping calculation
 {
 
 	if (isjumping)
@@ -689,17 +683,12 @@ int main()
 	setAll();
 
 	iSetTimer(50, change);
-
 	iSetTimer(set_timer_change_3, change3);
-
 	iSetTimer(100, change2);
-
 	iSetTimer(250, score_calc);
 
 	if (Music)
 	{
-		Jump_music = false;
-		collision_music = false;
 		PlaySound("sound\\ms1.wav", NULL, SND_LOOP | SND_ASYNC);
 	}
 
