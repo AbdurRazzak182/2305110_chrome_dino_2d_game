@@ -5,7 +5,6 @@ int screen_width = 1100;
 int screen_height = 596;
 int speed = 0;
 int bgspeed = speed;
-#define basespeed 10
 bool game_check = false;
 int sum = 0;
 int score = 0;
@@ -50,7 +49,7 @@ char bg_cactus[8][20] = {"pic\\ct1.bmp",
 
 };
 
-struct background
+struct background      //structure for background images and obstacles images
 {
 	int x;
 	int y;
@@ -65,7 +64,7 @@ typedef struct // structure for leaderboard
 
 } player;
 
-player arr[100];
+player arr[100];      //structural array where player name and their score is added and sorted and shown screen
 int line = 0;
 
 char player_name[20];
@@ -126,7 +125,7 @@ void iDraw()
 {
 
 	iClear();
-	if (game_state == 1)
+	if (game_state == 1)//main playing state where jump ,run , backgronund rendering and cactus rendering ,start from mouse condition 1
 	{
 
 		iShowBMP(0, 0, "pic\\bi.bmp");
@@ -182,15 +181,17 @@ void iDraw()
 		}
 	}
 
-	else if (game_state == 0)
+	else if (game_state == 0)  //home menu 
 	{
 
 		iSetColor(0, 255, 255);
 		iFilledRectangle(0, 593, 1100, 3);
 		iSetColor(255, 0, 0);
 		iShowBMP(0, 0, "pic\\home4.bmp");
-
-		iText(350, 500, "WELCOME TO MY GAME", GLUT_BITMAP_TIMES_ROMAN_24);
+        iSetColor(255,0,0);
+		iText(400, 520, "WELCOME  TO  MY  GAME", GLUT_BITMAP_TIMES_ROMAN_24);
+		iSetColor(0,0,255);
+		iText(450, 480, "CHROME__CAT", GLUT_BITMAP_TIMES_ROMAN_24);
 		iSetColor(255, 255, 0);
 		iSetColor(255, 255, 255);
 		iFilledRectangle(200, 150, 200, 40);
@@ -217,16 +218,16 @@ void iDraw()
 		iText(750, 63, "ABOUT ME", GLUT_BITMAP_HELVETICA_18);
 
 		iSetColor(255, 255, 153);
-		iFilledRectangle(470, 50, 150, 40);
+		iFilledRectangle(470, 100, 150, 40);
 		iSetColor(0, 0, 255);
-		iText(490, 63, "QUIT GAME", GLUT_BITMAP_HELVETICA_18);
+		iText(490, 113, "QUIT GAME", GLUT_BITMAP_HELVETICA_18);
 
 		iSetColor(255, 255, 153);
 		iFilledRectangle(700, 150, 100, 40);
 		iSetColor(0, 0, 255);
 		iText(720, 163, "PLAY", GLUT_BITMAP_HELVETICA_18);
 	}
-	else if (game_state == -1)
+	else if (game_state == -1)  //leaderboard show
 	{
 
 		iSetColor(153, 255, 255);
@@ -236,9 +237,9 @@ void iDraw()
 		iText(440, 520, "TOP 5 SCORES", GLUT_BITMAP_TIMES_ROMAN_24);
 
 		iSetColor(0, 255, 0);
-		iFilledRectangle(470, 50, 150, 40);
+		iFilledRectangle(470, 100, 150, 40);
 		iSetColor(0, 0, 255);
-		iText(490, 63, "QUIT GAME", GLUT_BITMAP_HELVETICA_18);
+		iText(490, 113, "QUIT GAME", GLUT_BITMAP_HELVETICA_18);
 		iSetColor(255, 0, 255);
 		show_leaderboard();
 	}
@@ -262,7 +263,7 @@ void iDraw()
 		iText(100, 290, "6. If  you  can  do  a  score  among  top  5  scorer  then  you  can  show  your  position  in  leaderboard.", GLUT_BITMAP_HELVETICA_18);
 	}
 
-	else if (game_state == 6)
+	else if (game_state == 6)   //about me page
 	{
 		iSetColor(153, 255, 204);
 		iFilledRectangle(0, 0, 1100, 596);
@@ -289,7 +290,7 @@ void iMouse(int button, int state, int mx, int my)
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
 
-		if (mx >= 700 && mx <= 800 && my >= 150 && my <= 190)
+		if (mx >= 700 && mx <= 800 && my >= 150 && my <= 190)//starting main game from this condition here
 		{
 			Music = false;
 			PlaySound(0, 0, 0);
@@ -310,22 +311,22 @@ void iMouse(int button, int state, int mx, int my)
 			game_state = -1;
 		}
 
-		if (mx >= 470 && mx <= 620 && my >= 50 && my <= 90)
+		if (mx >= 470 && mx <= 620 && my >= 100 && my <= 140)
 		{
 			exit(0);
 		}
 
-		if (mx >= 200 && mx <= 400 && my >= 50 && my <= 90)
+		if (mx >= 200 && mx <= 400 && my >= 50 && my <= 90)//show instruction page
 		{
 			game_state = 5;
 		}
 
-		if (mx >= 700 && mx <= 900 && my >= 50 && my <= 90)
+		if (mx >= 700 && mx <= 900 && my >= 50 && my <= 90)//show about me page
 		{
 			game_state = 6;
 		}
 
-		if (mx >= 480 && mx <= 630 && my >= 10 && my <= 50)
+		if (mx >= 480 && mx <= 630 && my >= 10 && my <= 50)//home menu
 		{
 			game_state = 0;
 		}
@@ -355,7 +356,7 @@ void iKeyboard(unsigned char key)
 
 		else
 		{
-			if (name_length < 19)
+			if (name_length < 19)//used to insert character
 			{
 
 				player_name[name_length] = key;
@@ -383,7 +384,7 @@ void iSpecialKeyboard(unsigned char key)
 {
 }
 
-void setAll()
+void setAll()   //background rendering,obstacle rendering
 {
 
 	for (int i = 0; i < 11; i++)
@@ -430,32 +431,29 @@ void setAll()
 		sum2 += 400;
 	}
 }
-int count = 0;
-int sp = 50;
 
-bool fo = false;
 
 void score_calc()
 {
 
-	if (isscore)
+	if (isscore)//true from mouse condition 1 to start not counting from run
 		score++;
 	if (score >= 50 && score <= 99)
 	{
 		bgspeed = 11;
 	}
-	else if (score >= 100 && score <= 149)
+	if (score >= 100 && score <= 149)//else if
 	{
 		bgspeed = 12;
 		gravity = -6;
 	}
-	else if (score >= 150 && score <= 199)
+	if (score >= 150 && score <= 199)//else if
 	{
 		bgspeed = 13;
 		gravity = -6;
 		set_timer_change_3 = 110;
 	}
-	else if (score >= 200 && score <= 249)
+	if (score >= 200 && score <= 249)//else if
 	{
 		bgspeed = 14;
 		gravity = -6;
@@ -473,15 +471,33 @@ void score_calc()
 		gravity = -7;
 		set_timer_change_3 = 120;
 	}
-	else if (score >= 401 && score <= 500)
+	if (score >= 401 && score <= 500)//else if
 	{
 		bgspeed = 20;
 		gravity = -8;
 		set_timer_change_3 = 125;
 	}
+	if(score>=501 && score<=700)
+	{
+		bgspeed=22;
+		gravity=-8;
+		set_timer_change_3=130;
+	}
+	if(score>=701 && score<=1000)
+	{
+		bgspeed=25;
+		gravity=-9;
+		set_timer_change_3=140;
+	}
+	if(score>1000)
+	{
+		bgspeed=28;
+		gravity=-10;
+		set_timer_change_3=145;
+	}
 }
 
-void score_leader()
+void score_leader()//taking name and score to array from score.txt file and sorting here
 {
 
 	char string[100];
@@ -547,10 +563,10 @@ void score_leader()
 			break;
 	}
 
-	fclose(fr);
+	//fclose(fr);
 }
 
-void stack()
+void stack() //to store score into score.txt file and call score_leader function
 {
 	fprintf(fp, "%d\n", score);
 
@@ -573,7 +589,7 @@ void gameover()
 	stack();
 }
 
-void change()
+void change() //background rendering from isettimer and collition conditions and call gameover()
 {
 
 	for (int i = 0; i < 11; i++)
@@ -627,9 +643,9 @@ void change()
 			if (jumpheight <= 140)
 				gameover();
 		}
-		if (cactus[7].x <= 210 && cactus[7].x >= 103)
+		if (cactus[7].x <= 220 && cactus[7].x >= 103)
 		{
-			if (jumpheight <= 95)
+			if (jumpheight <= 100)
 				gameover();
 		}
 		cactus[i].x -= bgspeed;
@@ -637,13 +653,13 @@ void change()
 			cactus[i].x = 4600;
 	}
 }
-void change2()
+void change2()//character running function from calling isettimer()
 {
 	chr_run_idx++;
 	if (chr_run_idx >= 6)
 		chr_run_idx = 0;
 }
-void change3()
+void change3() //for applying jumping calculation
 {
 
 	if (isjumping)
