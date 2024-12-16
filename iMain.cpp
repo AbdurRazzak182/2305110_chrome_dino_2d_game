@@ -8,11 +8,10 @@ int bgspeed = speed;
 bool game_check = false;
 int sum = 0;
 int score = 0;
-int point = 0;
 bool isscore = false;
 int set_timer_change_3 = 85;
 
-char bg[11][30] = {
+char bg[11][30] = {   //background 11 slicing piece
 
 	"pic\\bi1.bmp",
 	"pic\\bi2.bmp",
@@ -28,7 +27,7 @@ char bg[11][30] = {
 
 };
 
-char chr_run[6][20] = {
+char chr_run[6][20] = {      //cat sprite running pic
 	"pic\\r1.bmp",
 	"pic\\r2.bmp",
 	"pic\\r3.bmp",
@@ -65,12 +64,12 @@ typedef struct // structure for leaderboard
 } player;
 
 player arr[100]; // structural array where player name and their score is added and sorted and shown screen
+player arr2[100];
 int line = 0;
 
 char player_name[20];
 int name_length = 0;
 int input = 0;
-
 int idx = 0;
 
 bool isjumping = false;
@@ -81,11 +80,13 @@ int gravity = -5;
 int sum2 = 1000;
 
 int game_state = 0;
-
 int top_scorer[5];
+bool Music = true;
 
 FILE *fp = fopen("score.txt", "a"); // openning append or write file
 FILE *fr = fopen("score.txt", "r");
+FILE *fpf=fopen("score_leader.txt","a");
+FILE *fpr=fopen("score_leader.txt","r");
 
 void show_leaderboard()
 {
@@ -117,7 +118,6 @@ void show_leaderboard()
 	}
 }
 
-bool Music = true;
 
 void iDraw()
 {
@@ -165,14 +165,19 @@ void iDraw()
 
 			iSetColor(255, 0, 0);
 
-			iText(480, 400, "GAME OVER", GLUT_BITMAP_TIMES_ROMAN_24);
+			iText(490, 380, "GAME  OVER!!", GLUT_BITMAP_HELVETICA_18);
 
-			iShowBMP2(500, 260, "pic\\exit.bmp", 0);
-			iSetColor(255, 255, 0);
-			iRectangle(698, 270, 183, 35);
-			iFilledRectangle(698, 270, 183, 35);
-			iSetColor(0, 0, 204);
-			iText(700, 280, "LEADERBOARD", GLUT_BITMAP_TIMES_ROMAN_24);
+			
+			iSetColor(0,255,0);
+			iSetColor(255,255,153);
+			iFilledRectangle(350,270,180,40);
+			iSetColor(0,0,255);
+			iText(387,283,"EXIT  GAME",GLUT_BITMAP_HELVETICA_18);
+			
+			iSetColor(255,255,153);
+			iFilledRectangle(660, 270, 200, 40);
+			iSetColor(0,0,255);
+			iText(690, 283, "LEADERBOARD", GLUT_BITMAP_HELVETICA_18);
 		}
 	}
 
@@ -182,45 +187,50 @@ void iDraw()
 		iSetColor(0, 255, 255);
 		iFilledRectangle(0, 593, 1100, 3);
 		iSetColor(255, 0, 0);
-		iShowBMP(0, 0, "pic\\home4.bmp");
+		iShowBMP(0, 0, "pic\\new1.bmp");
 		iSetColor(255, 0, 0);
 		iText(400, 520, "WELCOME  TO  MY  GAME", GLUT_BITMAP_TIMES_ROMAN_24);
 		iSetColor(0, 0, 255);
 		iText(450, 480, "CHROME__CAT", GLUT_BITMAP_TIMES_ROMAN_24);
 		iSetColor(255, 255, 0);
 		iSetColor(255, 255, 255);
-		iFilledRectangle(200, 150, 200, 40);
-		iSetColor(0, 255, 0);
-		iText(200, 200, "Input Your Name:", GLUT_BITMAP_TIMES_ROMAN_24);
+		iFilledRectangle(450, 300, 200, 40);
+		iSetColor(0,0, 255);
+		iText(450,360, "Input Your Name:", GLUT_BITMAP_TIMES_ROMAN_24);
 		iSetColor(0, 0, 0);
 		if (input)
 		{
-			iText(205, 165, player_name, GLUT_BITMAP_TIMES_ROMAN_24);
+			iText(460, 315, player_name, GLUT_BITMAP_TIMES_ROMAN_24);
 		}
 		else
 		{
-			iText(205, 165, player_name, GLUT_BITMAP_TIMES_ROMAN_24);
+			iText(460, 315, player_name, GLUT_BITMAP_TIMES_ROMAN_24);
 		}
 
-		iSetColor(255, 255, 153);
+		iSetColor(255, 255, 0);
 		iFilledRectangle(200, 50, 200, 40);
 		iSetColor(0, 0, 255);
 		iText(220, 63, "INSTRUCTIONS", GLUT_BITMAP_HELVETICA_18);
 
-		iSetColor(255, 255, 153);
+		iSetColor(255, 255, 0);
 		iFilledRectangle(700, 50, 200, 40);
 		iSetColor(0, 0, 255);
 		iText(750, 63, "ABOUT ME", GLUT_BITMAP_HELVETICA_18);
 
-		iSetColor(255, 255, 153);
+		iSetColor(255, 255, 0);
 		iFilledRectangle(470, 100, 150, 40);
 		iSetColor(0, 0, 255);
 		iText(490, 113, "QUIT GAME", GLUT_BITMAP_HELVETICA_18);
 
-		iSetColor(255, 255, 153);
-		iFilledRectangle(700, 150, 100, 40);
+		iSetColor(255, 255, 0);
+		iFilledRectangle(700, 150, 200, 40);
+		iSetColor(0, 0,255);
+		iText(720, 163, "LEADERBOARD", GLUT_BITMAP_HELVETICA_18);
+
+		iSetColor(255, 255, 0);
+		iFilledRectangle(200, 150, 200, 40);
 		iSetColor(0, 0, 255);
-		iText(720, 163, "PLAY", GLUT_BITMAP_HELVETICA_18);
+		iText(270, 163, "PLAY", GLUT_BITMAP_HELVETICA_18);
 	}
 	else if (game_state == -1) // leaderboard show
 	{
@@ -237,6 +247,23 @@ void iDraw()
 		iText(490, 113, "QUIT GAME", GLUT_BITMAP_HELVETICA_18);
 		iSetColor(255, 0, 255);
 		show_leaderboard();
+	}
+    
+    else if(game_state==-101)
+	{
+		iSetColor(153, 255, 255);
+		iFilledRectangle(0, 0, 1100, 596);
+		iSetColor(0, 0, 204);
+		iLine(460, 510, 620, 510);
+		iText(460, 520, "TOP 5 SCORES", GLUT_BITMAP_TIMES_ROMAN_24);
+        
+		iSetColor(255, 0, 0);
+		iRectangle(480, 10, 150, 40);
+		iSetColor(255, 0, 255);
+		iText(495, 23, "BACK HOME", GLUT_BITMAP_HELVETICA_18);
+		iSetColor(255,0,255);
+		show_leaderboard();
+
 	}
 
 	else if (game_state == 5) // instruction page
@@ -257,6 +284,8 @@ void iDraw()
 		iText(100, 320, "5. When  the  cat  collides  with  the  obstacles  then  the  game  will  be  ended  and  you  can  show  then  your  score.", GLUT_BITMAP_HELVETICA_18);
 		iText(100, 290, "6. If  you  can  do  a  score  among  top  5  scorer  then  you  can  show  your  position  in  leaderboard.", GLUT_BITMAP_HELVETICA_18);
 	}
+
+	
 
 	else if (game_state == 6) // about me page
 	{
@@ -285,7 +314,7 @@ void iMouse(int button, int state, int mx, int my)
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
 
-		if (mx >= 700 && mx <= 800 && my >= 150 && my <= 190) // starting main game from this condition here
+		if (mx >= 200 && mx <= 400 && my >= 150 && my <= 190) // starting main game from this condition here
 		{
 			Music = false;
 			PlaySound(0, 0, 0);
@@ -295,12 +324,12 @@ void iMouse(int button, int state, int mx, int my)
 			isscore = true;
 		}
 
-		if (mx >= 510 && mx <= 597 && my >= 260 && my <= 297)
+		if (mx >= 350 && mx <= 530 && my >= 270 && my <= 310)
 		{
 			exit(0);
 		}
 
-		if (mx >= 698 && mx <= 881 && my >= 270 && my <= 305)
+		if (mx >= 660 && mx <= 860 && my >= 270 && my <= 310)
 		{
 
 			game_state = -1;
@@ -325,6 +354,11 @@ void iMouse(int button, int state, int mx, int my)
 		if (mx >= 480 && mx <= 630 && my >= 10 && my <= 50) // home menu
 		{
 			game_state = 0;
+		}
+		if(mx>=700 && mx <=900 && my>=150 && my <=190)
+		{
+			game_state=-101;
+			
 		}
 	}
 	if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
@@ -438,19 +472,19 @@ void score_calc()
 		gravity = -5;
 		set_timer_change_3 = 100;
 	}
-	if (score >= 100 && score <= 149) // else if
+	if (score >= 100 && score <= 149) 
 	{
 		bgspeed = 14;
 		gravity = -6;
 		set_timer_change_3 = 100;
 	}
-	if (score >= 150 && score <= 199) // else if
+	if (score >= 150 && score <= 199) 
 	{
 		bgspeed = 15;
 		gravity = -6;
 		set_timer_change_3 = 110;
 	}
-	if (score >= 200 && score <= 249) // else if
+	if (score >= 200 && score <= 249) 
 	{
 		bgspeed = 17;
 		gravity = -6;
@@ -468,7 +502,7 @@ void score_calc()
 		gravity = -8;
 		set_timer_change_3 = 120;
 	}
-	if (score >= 401 && score <= 500) // else if
+	if (score >= 401 && score <= 500) 
 	{
 		bgspeed = 22;
 		gravity = -9;
@@ -493,6 +527,7 @@ void score_calc()
 		set_timer_change_3 = 145;
 	}
 }
+
 
 void score_leader() // taking name and score to array from score.txt file and sorting here
 {
@@ -559,6 +594,7 @@ void score_leader() // taking name and score to array from score.txt file and so
 		if (flag == 0)
 			break;
 	}
+	
 }
 
 void stack() // to store score into score.txt file and call score_leader function
@@ -591,7 +627,7 @@ void change() // background rendering from isettimer and collition conditions an
 		upper_background[i].x -= bgspeed;
 
 		if (upper_background[i].x <= 0)
-			upper_background[i].x = 1100 - 12;
+			upper_background[i].x = 1100 -bgspeed;
 	}
 	for (int i = 0; i < 8; i++)
 	{
@@ -629,12 +665,12 @@ void change() // background rendering from isettimer and collition conditions an
 
 		if (cactus[5].x <= 200 && cactus[5].x >= 103)
 		{
-			if (jumpheight <= 135)
+			if (jumpheight <= 125)
 				gameover();
 		}
 		if (cactus[6].x <= 210 && cactus[6].x >= 103)
 		{
-			if (jumpheight <= 140)
+			if (jumpheight <= 135)
 				gameover();
 		}
 		if (cactus[7].x <= 220 && cactus[7].x >= 103)
@@ -642,7 +678,7 @@ void change() // background rendering from isettimer and collition conditions an
 			if (jumpheight <= 100)
 				gameover();
 		}
-		cactus[i].x -= bgspeed;
+		cactus[i].x -=bgspeed;
 		if (cactus[i].x <= 0)
 			cactus[i].x = 4600;
 	}
@@ -673,13 +709,13 @@ void change3() // for applying jumping calculation
 int main()
 {
 
-	if (fp == NULL || fr == NULL)
+	if (fp == NULL || fr == NULL || fpf==NULL || fpr==NULL)
 	{
 		exit(1);
 	}
 
-	player_name[0] = '\0';
-
+	player_name[0] ='\0';
+    score_leader();
 	setAll();
 
 	iSetTimer(50, change);
@@ -692,6 +728,6 @@ int main()
 		PlaySound("sound\\ms1.wav", NULL, SND_LOOP | SND_ASYNC);
 	}
 
-	iInitialize(screen_width, screen_height, "Game Project");
+	iInitialize(screen_width, screen_height,"CHROME_CAT");
 	return 0;
 }
